@@ -21,6 +21,7 @@ import pickle
 
 
 app = Flask(__name__)
+print("Name of the app: " , app.name)
 CORS(app)  # Habilita CORS para todas las rutas de la aplicación
 
 def extract_feature(file_name, mfcc, chroma, mel):
@@ -58,7 +59,7 @@ def predict_function(filename):
 
     y_pred = svc.predict(scaled_audio)
     
-    return encoder.inverse_transform(y_pred)
+    return str(encoder.inverse_transform(y_pred)[0])
 
 
     
@@ -81,18 +82,15 @@ def receive_audio():
     reduced_noise = nr.reduce_noise(y=data, sr=rate)
     wavfile.write("audio/mywav_reduced_noise.wav", rate, reduced_noise)
     
-    predict_function(filepath)
-    # Aquí puedes trabajar con el archivo de audio recibido, por ejemplo:
-    # guardar el archivo en el disco duro
-    # procesar el archivo de audio
-    # devolver una respuesta al cliente, etc.
+    #predict_function(filepath)
+   
     response = jsonify({'message': predict_function(filepath)})
-    response.hearders.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    # response.hearders.add('Access-Control-Allow-Origin', '*')
+    # response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    # response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
     # Por ejemplo, aquí devolvemos una respuesta simple indicando que se recibió el archivo de audio
     return response
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=3000)
+    app.run(debug=False, port=3000)
