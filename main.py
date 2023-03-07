@@ -16,6 +16,7 @@ import noisereduce as nr
 import soundfile
 import joblib # para cargar el scaler.pkl
 import pickle
+import traceback
 
 
 
@@ -65,20 +66,25 @@ def predict_function(filename):
 
 @app.route('/backend/audio', methods=['POST'])
 def receive_audio():
-    audio_file = request.files['audio']
-    audio = AudioSegment.from_file(audio_file)
+    try: 
+        audio_file = request.files['audio']
+        audio = AudioSegment.from_file(audio_file)
+        
+        # # # Set the path and filename for the downloaded audio file
+        # filename, extension = audio_file.filename.split('.')
+        # filepath = 'audio/' + f'{filename}_downloaded.{extension}'
+        
+        # # # Write the audio file data to the downloaded file
+        # audio.export(filepath, format=extension)
+        
+        
+        # #predict_function(filepath)
     
-    # # # Set the path and filename for the downloaded audio file
-    # filename, extension = audio_file.filename.split('.')
-    # filepath = 'audio/' + f'{filename}_downloaded.{extension}'
-    
-    # # # Write the audio file data to the downloaded file
-    # audio.export(filepath, format=extension)
-    
-    
-    # #predict_function(filepath)
-   
-    response = jsonify({'message': 'Dani'})
+        response = jsonify({'message': 'Success'})
+    except Exception as e:
+        error_message = traceback.format_exc() 
+        response = jsonify({'message': error_message}), 500 
+
     # response.hearders.add('Access-Control-Allow-Origin', '*')
     # response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     # response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
@@ -87,4 +93,4 @@ def receive_audio():
 
 
 if __name__ == '__main__':
-    app.run(threaded=True, port=5000)
+    app.run(True, port=5000)
