@@ -70,17 +70,17 @@ def receive_audio():
         audio_file = request.files['audio']
         audio = AudioSegment.from_file(audio_file)
         
-        # # # Set the path and filename for the downloaded audio file
-        # filename, extension = audio_file.filename.split('.')
-        # filepath = 'audio/' + f'{filename}_downloaded.{extension}'
+        # # Set the path and filename for the downloaded audio file
+        filename, extension = audio_file.filename.split('.')
+        filepath = 'audio/' + f'{filename}_downloaded.{extension}'
         
-        # # # Write the audio file data to the downloaded file
-        # audio.export(filepath, format=extension)
+        # # Write the audio file data to the downloaded file
+        audio.export(filepath, format=extension)
         
         
-        # #predict_function(filepath)
+        
     
-        response = jsonify({'message': 'Success'})
+        response = jsonify({'message': predict_function(filepath)})
     except Exception as e:
         error_message = traceback.format_exc() 
         response = jsonify({'message': error_message}), 500 
