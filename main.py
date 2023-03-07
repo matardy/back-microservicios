@@ -66,22 +66,17 @@ def predict_function(filename):
 @app.route('/backend/audio', methods=['POST'])
 def receive_audio():
     audio_file = request.files['audio']
-    # audio = AudioSegment.from_file(audio_file)
+    audio = AudioSegment.from_file(audio_file)
     
     # # Set the path and filename for the downloaded audio file
-    # filename, extension = audio_file.filename.split('.')
-    # filepath = 'audio/' + f'{filename}_downloaded.{extension}'
+    filename, extension = audio_file.filename.split('.')
+    filepath = 'audio/' + f'{filename}_downloaded.{extension}'
     
     # # Write the audio file data to the downloaded file
-    # audio.export(filepath, format=extension)
+    audio.export(filepath, format=extension)
     
-    # # load data
-    # rate, data = wavfile.read(filepath)
-    # # perform noise reduction
-    # reduced_noise = nr.reduce_noise(y=data, sr=rate)
-    # wavfile.write("audio/mywav_reduced_noise.wav", rate, reduced_noise)
     
-    # #predict_function(filepath)
+    predict_function(filepath)
    
     response = jsonify({'message': 'Dani'})
     # response.hearders.add('Access-Control-Allow-Origin', '*')
