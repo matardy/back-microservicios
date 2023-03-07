@@ -21,7 +21,6 @@ import pickle
 
 
 app = Flask(__name__)
-print("Name of the app: " , app.name)
 CORS(app)  # Habilita CORS para todas las rutas de la aplicación
 
 def extract_feature(file_name, mfcc, chroma, mel):
@@ -93,4 +92,4 @@ def receive_audio():
 
 
 if __name__ == '__main__':
-    app.run(debug=False, port=3000)
+    app.run(threaded=True, port=5000)
